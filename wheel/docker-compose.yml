@@ -1,0 +1,19 @@
+services:
+  # Статичний сервер: http://localhost:8080
+  # Щоб відкрити на телефоні — зайдіть на http://<IP-компʼютера>:8080 у тій самій Wi-Fi мережі.
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+
+  # Лінтер, запускається за потреби: docker compose run --rm lint
+  lint:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: npx --yes eslint@9 app.js
+    profiles:
+      - tools
